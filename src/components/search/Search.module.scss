@@ -1,0 +1,32 @@
+.root  {
+  display: flex;
+  column-gap: 5px;
+  align-items: center;
+  position: relative;
+  
+}
+
+.input {
+  width: 300px;
+	font-size: 13px;
+	padding: 6px 0 4px 25px;
+	border: 1px solid #cecece;
+	background: #F6F6f6;
+	border-radius: 8px;
+  @media(max-width: 1000px) {
+    width: 200px;
+  }
+}
+
+.searchIcon {
+  position: absolute;
+  left: 4px;
+}
+
+.closeIcon {
+  cursor: pointer;
+  height: 13px;
+  width: 13px;
+  position: absolute;
+  right: 8px;
+}
