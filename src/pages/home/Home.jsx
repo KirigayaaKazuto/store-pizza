@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext, useRef } from 'react';
 import { Categories } from '../../components/categories/Categories';
 import { Sort, sortList } from '../../components/sort/Sort';
-import { PizzaItem } from '../../components/pizza-item/PizzaItem';
+import { PizzaItem } from '../../components/pizzaItem/PizzaItem';
 
 import { Skeleton } from '../../components/Skeleton';
 import axios from 'axios';
@@ -24,7 +24,7 @@ export const Home = () => {
   const navigate = useNavigate()
   
   const skeletons = [...new Array(8)].map((_, i) => <Skeleton key={i} />)
-
+  
   const onChangeCategory = (id) => {
     dispath(setCategory(id))
   }
@@ -92,7 +92,6 @@ export const Home = () => {
   }, [category, sort.sortProperty, currentPage]);
 
 
-
   return (
     <div className='content'>
       <div className='container'>
@@ -107,6 +106,7 @@ export const Home = () => {
             : pizza.filter(obj => obj.title.toLowerCase().includes(searchValue.toLowerCase())).map((obj) => (
                 <PizzaItem
                   key={obj.id}
+                  id={obj.id}
                   image={obj.imageUrl}
                   title={obj.title}
                   price={obj.price}

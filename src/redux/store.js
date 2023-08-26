@@ -1,14 +1,10 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit'
-import filterSlice from './slice/filterSlice'
-//import {favoritesSlice} from './favorites/favorites.slice'
-// const reducers = combineReducers({
-//   //favorites: favoritesSlice.reducer,
-//   filter: filterSlice
-
-// })
+import filter from './slice/filterSlice'
+import basket from './slice/basketSlice'
 
 export const store = configureStore({
   reducer: {
-    filter: filterSlice
+    filter,
+    basket
   },
 })

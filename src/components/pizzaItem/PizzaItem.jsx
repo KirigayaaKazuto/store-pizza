@@ -1,10 +1,30 @@
 import React, { useState } from 'react';
+import {useDispatch, useSelector} from 'react-redux'
+import {addItem} from './../../redux/slice/basketSlice'
 
-export const PizzaItem = ({ title, price, image, sizes, types }) => {
+export const PizzaItem = ({ id, title, price, image, sizes, types }) => {
   const pizzaTypes = ['тонкое', 'традиционное'];
   const [activeType, setActiveType] = useState();
   const [activeSize, setActiveSize] = useState();
   
+  const dispath = useDispatch()
+  const basketItem = useSelector(state => state.basket.items.find(obj => obj.id === id))
+  const addedCount = basketItem ? basketItem.count : 0
+  const addBasket = () => {
+    const pizza = {
+      id,
+      price,
+      title,
+      image,
+      size: activeSize,
+      type: pizzaTypes[activeType]
+    }
+    if(activeType >= 0 && activeSize >= 0) {
+      dispath(addItem(pizza))
+    } else {
+      alert('Выберите тип или размер пиццы')
+    }
+  }
 
   return (
     <div className='pizza-block-wrapper'>
@@ -37,7 +57,7 @@ export const PizzaItem = ({ title, price, image, sizes, types }) => {
         </div>
         <div className='pizza-block__bottom'>
           <div className='pizza-block__price'>от {price} ₽</div>
-          <button className='button button--outline button--add'>
+          <button onClick={addBasket} className='button button--outline button--add'>
             <svg
               width='12'
               height='12'
@@ -51,7 +71,7 @@ export const PizzaItem = ({ title, price, image, sizes, types }) => {
               />
             </svg>
             <span>Добавить</span>
-            <i>0</i>
+            {addedCount > 0 && <i>{addedCount}</i>}
           </button>
         </div>
       </div>

@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { setSort } from '../../redux/slice/filterSlice';
+import { useRef } from 'react';
+import { useEffect } from 'react';
 
 export const sortList = [
     { id: 0, title: 'популярности(по возрастанию)', sortProperty: '-rating' },
@@ -12,7 +14,7 @@ export const sortList = [
   ];
 
 export const Sort = () => {
-  
+  const sortRef = useRef()
   const [isOpened, setIsOpened] = useState(false);
   
   const dispath = useDispatch()
@@ -22,8 +24,22 @@ export const Sort = () => {
     dispath(setSort(obj));
     setIsOpened(false)
   };
+
+  useEffect (() => {
+    const handleClickSort = e => {
+      if(!e.composedPath().includes(sortRef.current)) {
+        setIsOpened(false)
+      }
+    }
+    document.body.addEventListener('click', handleClickSort)
+
+    return () => {
+      document.body.removeEventListener('click', handleClickSort)
+    }
+  }, [])
+
   return (
-    <div className='sort'>
+    <div ref={sortRef} className='sort'>
       <div className='sort__label'>
         <svg
           width='10'
