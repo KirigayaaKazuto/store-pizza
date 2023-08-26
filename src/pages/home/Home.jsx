@@ -8,7 +8,7 @@ import axios from 'axios';
 import { Context } from '../../components/Context';
 import { Pagination } from '../../components/pagination/Pagination';
 import { useDispatch, useSelector } from 'react-redux';
-import { setCategory, setCurrentPage, setFilters } from '../../redux/slice/filter/filterSlice';
+import { setCategory, setCurrentPage, setFilters } from '../../redux/slice/filterSlice';
 import qs from 'qs'
 import { useNavigate } from 'react-router';
 

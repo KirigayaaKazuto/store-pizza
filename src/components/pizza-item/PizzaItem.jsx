@@ -4,6 +4,7 @@ export const PizzaItem = ({ title, price, image, sizes, types }) => {
   const pizzaTypes = ['тонкое', 'традиционное'];
   const [activeType, setActiveType] = useState();
   const [activeSize, setActiveSize] = useState();
+  
 
   return (
     <div className='pizza-block-wrapper'>

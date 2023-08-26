@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { setSort } from '../../redux/slice/filter/filterSlice';
+import { setSort } from '../../redux/slice/filterSlice';
 
 export const sortList = [
     { id: 0, title: 'популярности(по возрастанию)', sortProperty: '-rating' },
