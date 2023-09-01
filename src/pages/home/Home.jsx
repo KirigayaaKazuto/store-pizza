@@ -1,10 +1,9 @@
-import React, { useState, useEffect, useContext, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Categories } from '../../components/categories/Categories';
 import { Sort, sortList } from '../../components/sort/Sort';
 import { PizzaItem } from '../../components/pizzaItem/PizzaItem';
 
 import { Skeleton } from '../../components/Skeleton';
-import { Context } from '../../components/Context';
 import { Pagination } from '../../components/pagination/Pagination';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectFilter, setCategory, setCurrentPage, setFilters } from '../../redux/slice/filterSlice';
@@ -19,7 +18,7 @@ export const Home = () => {
   const isSearch = useRef(false);
   const isMounted = useRef(false);
 
-  const { searchValue } = useContext(Context);;
+  const {search} = useSelector(selectFilter)
   const navigate = useNavigate();
 
   const skeletons = [...new Array(8)].map((_, i) => <Skeleton key={i} />);
@@ -106,7 +105,7 @@ export const Home = () => {
               {status === 'loading'
             ? skeletons
             : items
-                .filter((obj) => obj.title.toLowerCase().includes(searchValue.toLowerCase()))
+                .filter((obj) => obj.title.toLowerCase().includes(search.toLowerCase()))
                 .map((obj) => (
                   <PizzaItem
                     key={obj.id}

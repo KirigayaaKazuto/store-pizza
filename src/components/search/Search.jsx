@@ -1,29 +1,31 @@
-import React, { useCallback, useContext, useRef, useState } from 'react'
+import React, { useCallback, useRef, useState } from 'react'
 import {AiOutlineSearch} from 'react-icons/ai'
 import {GrClose} from 'react-icons/gr'
 
 import styles from './Search.module.scss'
-import { Context } from '../Context'
 import { debounce } from 'lodash'
+import { useDispatch } from 'react-redux'
+import { setSearch } from '../../redux/slice/filterSlice'
 
 
 
 
 export const Search = () => {
-  const {setSearchValue} = useContext(Context)
+  const dispath = useDispatch()
   const inputRef = useRef()
   const [value, setValue] = useState('')
 
 
   const onClickClear = () => {
     setValue('')
-    setSearchValue('')
+    dispath(setSearch(''))
     inputRef.current.focus()
   }
 
   const updateSearchValue = useCallback(
       debounce((str) => {
-        setSearchValue(str)
+        dispath(setSearch(str))
+        console.log("Sec")
       }, 250), []
     )
 
