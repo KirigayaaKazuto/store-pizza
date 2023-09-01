@@ -3,11 +3,11 @@ import { Link } from 'react-router-dom';
 import { BasketItem } from '../../components/basketItem/BasketItem';
 import { useDispatch, useSelector } from 'react-redux';
 import { BasketNotFound } from '../../components/BasketNotFound/BasketNotFound';
-import { clearItem } from '../../redux/slice/basketSlice';
+import { clearItem, selectBasket } from '../../redux/slice/basketSlice';
 
 export const Basket = () => {
   const dispath = useDispatch()
-  const {totalPrice, items} = useSelector(state => state.basket)
+  const {totalPrice, items} = useSelector(selectBasket)
   const totalCount = items.reduce((sum, obj) => sum + obj.count, 0)
   
   const onClickClear = () => {

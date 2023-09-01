@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import {useDispatch, useSelector} from 'react-redux'
-import {addItem} from './../../redux/slice/basketSlice'
+import {addItem, selectBasketItemById} from './../../redux/slice/basketSlice'
 
 export const PizzaItem = ({ id, title, price, image, sizes, types }) => {
   const pizzaTypes = ['тонкое', 'традиционное'];
@@ -8,7 +8,7 @@ export const PizzaItem = ({ id, title, price, image, sizes, types }) => {
   const [activeSize, setActiveSize] = useState();
   
   const dispath = useDispatch()
-  const basketItem = useSelector(state => state.basket.items.find(obj => obj.id === id))
+  const basketItem = useSelector(selectBasketItemById(id))
   const addedCount = basketItem ? basketItem.count : 0
   const addBasket = () => {
     const pizza = {

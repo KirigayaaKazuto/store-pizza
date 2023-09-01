@@ -4,93 +4,88 @@ import { Sort, sortList } from '../../components/sort/Sort';
 import { PizzaItem } from '../../components/pizzaItem/PizzaItem';
 
 import { Skeleton } from '../../components/Skeleton';
-import axios from 'axios';
 import { Context } from '../../components/Context';
 import { Pagination } from '../../components/pagination/Pagination';
 import { useDispatch, useSelector } from 'react-redux';
-import { setCategory, setCurrentPage, setFilters } from '../../redux/slice/filterSlice';
-import qs from 'qs'
+import { selectFilter, setCategory, setCurrentPage, setFilters } from '../../redux/slice/filterSlice';
+import qs from 'qs';
 import { useNavigate } from 'react-router';
+import { fetchPizzas, selectPizzaData } from '../../redux/slice/pizzasSlice';
 
 export const Home = () => {
-  const {category, sort, currentPage} = useSelector(state => state.filter)
-  const dispath = useDispatch()
-  const isSearch = useRef(false)
-  const isMounted = useRef(false)
+  const { category, sort, currentPage } = useSelector(selectFilter);
+  const {items , status} = useSelector(selectPizzaData)
+  const dispath = useDispatch();
+  const isSearch = useRef(false);
+  const isMounted = useRef(false);
 
-  const {searchValue} = useContext(Context)
-  const [pizza, setPizza] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const navigate = useNavigate()
-  
-  const skeletons = [...new Array(8)].map((_, i) => <Skeleton key={i} />)
-  
+  const { searchValue } = useContext(Context);;
+  const navigate = useNavigate();
+
+  const skeletons = [...new Array(8)].map((_, i) => <Skeleton key={i} />);
+
   const onChangeCategory = (id) => {
-    dispath(setCategory(id))
-  }
+    dispath(setCategory(id));
+  };
 
   const onChangePage = (num) => {
-    dispath(setCurrentPage(num))
-  }
+    dispath(setCurrentPage(num));
+  };
 
-  const fetchPizzas = async() => {
-    setIsLoading(true)
-    const sortBy = sort.sortProperty.replace('-', '')
-    const order = sort.sortProperty.includes('-') ? "asc" : 'desc'
-    const categoryId = category > 0 ? `category=${category}` : ''
- 
-    const pizza = await axios.get(`https://64d663f02a017531bc12965c.mockapi.io/kfdl?page=${currentPage}&limit=4&${categoryId}&sortBy=${sortBy}&order=${order}`)
+  const fetchPizzasItem = async () => {
+    const sortBy = sort.sortProperty.replace('-', '');
+    const order = sort.sortProperty.includes('-') ? 'asc' : 'desc';
+    const categoryId = category > 0 ? `category=${category}` : '';
+    dispath(fetchPizzas({
+      sortBy, order, categoryId,currentPage
+    }))
+  };
 
-        setIsLoading(false);
-
-        setPizza(pizza.data);
-  }
+  // если категория = 0, то в параметры url ниче не добавляем
+  useEffect(() => {
+    if(category === 0) navigate('')
+  }, [category, sort.sortProperty, currentPage])
 
   // если при первой загрузке isMounted = false, то мы не добавляем параметры в адресную строку
   useEffect(() => {
-    if(isMounted.current) {
+    if (isMounted.current) {
+      
       const queryString = qs.stringify({
         sortProperty: sort.sortProperty,
         category,
-        currentPage
-      })
-      navigate(`?${queryString}`)
+        currentPage,
+      });
+      navigate(`?${queryString}`);
     }
-    isMounted.current = true
-  }, [category, sort.sortProperty, currentPage])
+    isMounted.current = true;
+  }, [category, sort.sortProperty, currentPage]);
 
   // если был первый рендер, то проверяем URL-параметры и сохраняем в редуксе
   useEffect(() => {
-    if(window.location.search) {
-      const params = qs.parse(window.location.search.substring(1))
+    if (window.location.search) {
+      const params = qs.parse(window.location.search.substring(1));
       
-      const sort = sortList.find(obj => obj.sortProperty === params.sortProperty)
-      
+      const sort = sortList.find((obj) => obj.sortProperty === params.sortProperty);
+
       dispath(
         setFilters({
           ...params,
-          sort
-        })
-      )
-      isSearch.current = true
+          sort,
+          category
+        }),
+      );
+      isSearch.current = true;
     }
-  }, [])
+  }, []);
 
-// если был первый рендер, то вызываем наши пиццы  
+  // если был первый рендер, то вызываем наши пиццы
   useEffect(() => {
     window.scrollTo(0, 0);
-    try {
-      if(!isSearch.current) {
-        fetchPizzas()
+      if (!isSearch.current) {
+        fetchPizzasItem();
       }
-      isSearch.current = false
-
-    } catch (error) {
-      console.warn(error);
-      alert('Произошла ошибка при получение данных');
-    }
+      isSearch.current = false;
   }, [category, sort.sortProperty, currentPage]);
-
 
   return (
     <div className='content'>
@@ -100,22 +95,36 @@ export const Home = () => {
           <Sort />
         </div>
         <h2 className='content__title'>Все пиццы</h2>
-        <div className='content__items'>
-          {isLoading
+        {
+           status === 'error'
+           ? (
+             <h2 className='content-error'>Извините, произошла ошибка</h2>
+           )
+           : (
+            <div className='content__items'>
+          
+              {status === 'loading'
             ? skeletons
-            : pizza.filter(obj => obj.title.toLowerCase().includes(searchValue.toLowerCase())).map((obj) => (
-                <PizzaItem
-                  key={obj.id}
-                  id={obj.id}
-                  image={obj.imageUrl}
-                  title={obj.title}
-                  price={obj.price}
-                  sizes={obj.sizes}
-                  types={obj.types}
-                />
-              ))}
+            : items
+                .filter((obj) => obj.title.toLowerCase().includes(searchValue.toLowerCase()))
+                .map((obj) => (
+                  <PizzaItem
+                    key={obj.id}
+                    id={obj.id}
+                    image={obj.imageUrl}
+                    title={obj.title}
+                    price={obj.price}
+                    sizes={obj.sizes}
+                    types={obj.types}
+                  />
+                ))}
+            
+          
         </div>
-        <Pagination setPageCount={onChangePage}/>
+           )
+        }
+        
+        <Pagination setPageCount={onChangePage} />
       </div>
     </div>
   );

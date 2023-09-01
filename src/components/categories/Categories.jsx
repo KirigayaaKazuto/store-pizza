@@ -1,5 +1,5 @@
 import React from 'react';
-const categoriesName = [
+export const categoriesName = [
   { id: 0, name: 'Все' },
   { id: 1, name: 'Мясные' },
   { id: 2, name: 'Вегетарианская' },

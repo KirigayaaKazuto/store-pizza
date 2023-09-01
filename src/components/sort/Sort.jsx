@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { setSort } from '../../redux/slice/filterSlice';
+import { selectFilter, setSort } from '../../redux/slice/filterSlice';
 import { useRef } from 'react';
 import { useEffect } from 'react';
 
@@ -18,7 +18,7 @@ export const Sort = () => {
   const [isOpened, setIsOpened] = useState(false);
   
   const dispath = useDispatch()
-  const sort = useSelector(state => state.filter.sort)
+  const {sort} = useSelector(selectFilter)
 
   const onClickSortSelected = (obj) => {
     dispath(setSort(obj));

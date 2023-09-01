@@ -2,9 +2,10 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Search } from '../search/Search';
 import { useSelector } from 'react-redux';
+import { selectBasket } from '../../redux/slice/basketSlice';
 
 export const Header = () => {
-  const {totalPrice, items} = useSelector(state => state.basket)
+  const {totalPrice, items} = useSelector(selectBasket)
   const totalCount = items.reduce((sum, obj) => sum + obj.count, 0)
   return (
     <div className='header'>
