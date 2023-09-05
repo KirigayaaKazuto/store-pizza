@@ -10,6 +10,7 @@ import { selectFilter, setCategory, setCurrentPage, setFilters } from '../../red
 import qs from 'qs';
 import { useNavigate } from 'react-router';
 import { fetchPizzas, selectPizzaData } from '../../redux/slice/pizzasSlice';
+import { Link } from 'react-router-dom';
 
 export const Home = () => {
   const { category, sort, currentPage } = useSelector(selectFilter);
@@ -107,15 +108,16 @@ export const Home = () => {
             : items
                 .filter((obj) => obj.title.toLowerCase().includes(search.toLowerCase()))
                 .map((obj) => (
-                  <PizzaItem
-                    key={obj.id}
-                    id={obj.id}
-                    image={obj.imageUrl}
-                    title={obj.title}
-                    price={obj.price}
-                    sizes={obj.sizes}
-                    types={obj.types}
-                  />
+                  <Link key={obj.id} to={`pizza/${obj.id}`}>
+                    <PizzaItem
+                      id={obj.id}
+                      image={obj.imageUrl}
+                      title={obj.title}
+                      price={obj.price}
+                      sizes={obj.sizes}
+                      types={obj.types}
+                    />
+                  </Link>
                 ))}
             
           

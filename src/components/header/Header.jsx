@@ -11,7 +11,7 @@ export const Header = () => {
     <div className='header'>
       <div className='container'>
         <Link to='/' className='header__logo'>
-          <img width='38' src='./img/pizza-logo.svg' alt='Pizza logo' />
+          <img width='38' src='img/pizza-logo.svg' alt='Pizza logo' />
           <div>
             <h1>React Pizza</h1>
             <p>самая вкусная пицца во вселенной</p>
@@ -20,7 +20,7 @@ export const Header = () => {
         <div className='header-flex'>
         
         <Search />
-        <div className='header__cart'>
+          <div className='header__cart'>
           <Link to='/basket' className='button button--cart'>
             <span>{totalPrice} ₽</span>
             <div className='button__delimiter'></div>
@@ -55,10 +55,8 @@ export const Header = () => {
             </svg>
             <span>{totalCount}</span>
           </Link>
+          </div>
         </div>
-        </div>
-        
-        
       </div>
     </div>
   );
