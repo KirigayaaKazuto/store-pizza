@@ -5,10 +5,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { BasketNotFound } from '../../components/BasketNotFound/BasketNotFound';
 import { clearItem, selectBasket } from '../../redux/slice/basketSlice';
 
-export const Basket = () => {
+export const Basket: React.FC = () => {
   const dispath = useDispatch()
   const {totalPrice, items} = useSelector(selectBasket)
-  const totalCount = items.reduce((sum, obj) => sum + obj.count, 0)
+  const totalCount = items.reduce((sum: number, obj: any) => sum + obj.count, 0)
   
   const onClickClear = () => {
     if(window.confirm('Хотите очистить корзину?')) dispath(clearItem())
@@ -99,7 +99,7 @@ export const Basket = () => {
           <div className='content__items content__items-block'>
             
             {
-              items.map(item => (
+              items.map((item: any) => (
                 <BasketItem key={item.id} {...item} />
               ))
             }

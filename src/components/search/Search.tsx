@@ -3,33 +3,33 @@ import {AiOutlineSearch} from 'react-icons/ai'
 import {GrClose} from 'react-icons/gr'
 
 import styles from './Search.module.scss'
-import { debounce } from 'lodash'
+import debounce from 'lodash/debounce'
 import { useDispatch } from 'react-redux'
 import { setSearch } from '../../redux/slice/filterSlice'
 
 
 
 
-export const Search = () => {
+export const Search: React.FC = () => {
   const dispath = useDispatch()
-  const inputRef = useRef()
+  const inputRef = useRef<HTMLInputElement>(null)
   const [value, setValue] = useState('')
 
 
   const onClickClear = () => {
     setValue('')
     dispath(setSearch(''))
-    inputRef.current.focus()
+    inputRef.current?.focus()
   }
 
   const updateSearchValue = useCallback(
-      debounce((str) => {
-        dispath(setSearch(str))
-        console.log("Sec")
+      debounce((str: string) => {
+        console.log(str)
+        dispath(setSearch(str)) 
       }, 250), []
     )
 
-  const onChangeInput = (e) => {
+  const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value)
     updateSearchValue(e.target.value)
   }

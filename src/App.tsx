@@ -2,7 +2,7 @@ import { Home } from './pages/home/Home';
 import './scss/app.scss';
 import { useSelector, useDispatch } from 'react-redux';
 //git remote add origin https://github.com/KirigayaaKazuto/store-pizza.git
-import { Context } from './components/Context';
+
 import { Route, Routes } from 'react-router-dom';
 import { Layout } from './components/Layout';
 import { NotFound } from './pages/notFound/NotFound';

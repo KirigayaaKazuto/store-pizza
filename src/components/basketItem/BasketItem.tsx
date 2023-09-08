@@ -2,9 +2,18 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { addItem, decrementItem, removeItem } from '../../redux/slice/basketSlice';
 
-export const BasketItem = ({id,title, price, image, count, size, type}) => {
-  const dispath = useDispatch()
+type TBasketItem = {
+  id: number;
+  title: string;
+  price: number;
+  image: string;
+  count: number
+  size: number;
+  type: string
+}
 
+export const BasketItem: React.FC<TBasketItem>= ({id,title, price, image, count, size, type}) => {
+  const dispath = useDispatch()
   const onClickIncrement = () => dispath(addItem({id}))
   const onClickDecrement = () => dispath(decrementItem({id, price}))
   const onClickRemove = () => {

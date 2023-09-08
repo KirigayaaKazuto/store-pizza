@@ -3,8 +3,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { selectFilter, setSort } from '../../redux/slice/filterSlice';
 import { useRef } from 'react';
 import { useEffect } from 'react';
-
-export const sortList = [
+import { TSort } from '../../@types/types';
+export const sortList: TSort[] = [
     { id: 0, title: 'популярности(по возрастанию)', sortProperty: '-rating' },
     { id: 1, title: 'популярности(по убыванию)', sortProperty: 'rating' },
     { id: 2, title: 'цене(по возрастанию)', sortProperty: '-price' },
@@ -13,21 +13,26 @@ export const sortList = [
     { id: 5, title: 'алфавиту(по убыванию)', sortProperty: 'title' },
   ];
 
-export const Sort = () => {
-  const sortRef = useRef()
+type TPopupClick = MouseEvent & {
+  composedPath: Node[]
+};
+
+export const Sort: React.FC = () => {
+  const sortRef = useRef<HTMLDivElement>(null)
   const [isOpened, setIsOpened] = useState(false);
   
   const dispath = useDispatch()
   const {sort} = useSelector(selectFilter)
 
-  const onClickSortSelected = (obj) => {
+  const onClickSortSelected = (obj: TSort) => {
     dispath(setSort(obj));
     setIsOpened(false)
   };
 
   useEffect (() => {
-    const handleClickSort = e => {
-      if(!e.composedPath().includes(sortRef.current)) {
+    const handleClickSort = (e: MouseEvent) => {
+      const _e = e as TPopupClick
+      if(sortRef.current && !_e.composedPath.includes(sortRef.current)) {
         setIsOpened(false)
       }
     }

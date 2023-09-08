@@ -12,7 +12,14 @@ import { useNavigate } from 'react-router';
 import { fetchPizzas, selectPizzaData } from '../../redux/slice/pizzasSlice';
 import { Link } from 'react-router-dom';
 
-export const Home = () => {
+// type THome = {
+//   sortBy: string;
+//   order: string
+//   categoryId: number
+//   currentPage: number
+// }
+
+export const Home: React.FC = () => {
   const { category, sort, currentPage } = useSelector(selectFilter);
   const {items , status} = useSelector(selectPizzaData)
   const dispath = useDispatch();
@@ -24,11 +31,11 @@ export const Home = () => {
 
   const skeletons = [...new Array(8)].map((_, i) => <Skeleton key={i} />);
 
-  const onChangeCategory = (id) => {
+  const onChangeCategory = (id:number) => {
     dispath(setCategory(id));
   };
 
-  const onChangePage = (num) => {
+  const onChangePage = (num:number) => {
     dispath(setCurrentPage(num));
   };
 
@@ -36,9 +43,13 @@ export const Home = () => {
     const sortBy = sort.sortProperty.replace('-', '');
     const order = sort.sortProperty.includes('-') ? 'asc' : 'desc';
     const categoryId = category > 0 ? `category=${category}` : '';
-    dispath(fetchPizzas({
-      sortBy, order, categoryId,currentPage
-    }))
+    console.log( '1', sortBy, '2', order, '3', categoryId, '4',currentPage)
+    dispath(
+      // @ts-ignore
+      fetchPizzas({
+        sortBy, order, categoryId,currentPage
+      })
+    )
   };
 
   // если категория = 0, то в параметры url ниче не добавляем
@@ -106,18 +117,19 @@ export const Home = () => {
               {status === 'loading'
             ? skeletons
             : items
-                .filter((obj) => obj.title.toLowerCase().includes(search.toLowerCase()))
-                .map((obj) => (
-                  <Link key={obj.id} to={`pizza/${obj.id}`}>
+                .filter((obj:any) => obj.title.toLowerCase().includes(search.toLowerCase()))
+                .map((obj:any) => (
+                  // <Link key={obj.id} to={`pizza/${obj.id}`}>
                     <PizzaItem
                       id={obj.id}
+                      key={obj.id}
                       image={obj.imageUrl}
                       title={obj.title}
                       price={obj.price}
                       sizes={obj.sizes}
                       types={obj.types}
                     />
-                  </Link>
+                  // {/* </Link> */}
                 ))}
             
           
@@ -125,7 +137,7 @@ export const Home = () => {
            )
         }
         
-        <Pagination setPageCount={onChangePage} />
+        <Pagination currentPage={currentPage} setPageCount={onChangePage} />
       </div>
     </div>
   );

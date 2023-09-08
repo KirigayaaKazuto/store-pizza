@@ -1,4 +1,3 @@
-import React from 'react';
 export const categoriesName = [
   { id: 0, name: 'Все' },
   { id: 1, name: 'Мясные' },
@@ -7,9 +6,15 @@ export const categoriesName = [
   { id: 4, name: 'Острые' },
   { id: 5, name: 'Закрытые' },
 ];
-export const Categories = ({ category, setCategory }) => {
 
-  const onClickCategory = (id) => {
+export type TCategories = {
+  category: number;
+  setCategory: (id: number) => void; 
+}
+
+export const Categories: React.FC<TCategories> = ({ category, setCategory }) => {
+
+  const onClickCategory = (id: number) => {
     setCategory(id);
   };
 

@@ -1,10 +1,10 @@
 import React from 'react';
 import styles from './NotFound.module.scss';
 
-export const NotFound = () => {
+export const NotFound:React.FC = () => {
   return (
     <div className={styles.root}>
-      <h1>Ничего не найдено</h1>
+       <h1>Ничего не найдено</h1>
       <p className={styles.decription}>К сожалению данная страница отсутствует</p>
     </div>
   );

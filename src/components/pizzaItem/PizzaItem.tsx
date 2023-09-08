@@ -1,12 +1,20 @@
 import React, { useState } from 'react';
 import {useDispatch, useSelector} from 'react-redux'
-import {addItem, selectBasketItemById} from './../../redux/slice/basketSlice'
+import {addItem, selectBasketItemById} from '../../redux/slice/basketSlice'
 
-export const PizzaItem = ({ id, title, price, image, sizes, types }) => {
+interface IPizzaItem {
+  id: number;
+  title: string;
+  price: number;
+  image: string;
+  sizes: number[];
+  types: number[];
+}
+
+export const PizzaItem: React.FC<IPizzaItem>= ({ id, title, price, image, sizes, types }) => {
   const pizzaTypes = ['тонкое', 'традиционное'];
-  const [activeType, setActiveType] = useState();
-  const [activeSize, setActiveSize] = useState();
-  
+  const [activeType, setActiveType] = useState<number>(-1);
+  const [activeSize, setActiveSize] = useState<number>(-1);
   const dispath = useDispatch()
   const basketItem = useSelector(selectBasketItemById(id))
   const addedCount = basketItem ? basketItem.count : 0
